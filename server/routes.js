@@ -21,16 +21,23 @@ router.get('/users', (req, res) => {
   models.User.findAll().then((users) => {
     res.json(users);
   });
-  // console.log(models.user);
-})
+});
 
-// router.get('/groups', (req, res) => {
-//   models.group.findAll({
-//     include: [ models.user ]
-//   }).then((groups) => {
-//     res.json(groups);
-//   });
-// })
+router.get('/boards/:boardId', (req, res) => {
+  // models.group.findAll({
+  //   include: [ models.user ]
+  // }).then((groups) => {
+  //   res.json(groups);
+  // });
+  models.Board.findByPrimary(req.params.boardId, {
+    include: [ models.User ]
+  })
+    .then((board) => {
+      res.json(board);
+    })
+
+  
+})
 
 // router.get('/', catchErrors(storeController.getStores));
 // router.get('/stores', catchErrors(storeController.getStores));

@@ -14,16 +14,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       required: true
     },
-    created_at: {
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false
     },
-    updated_at: DataTypes.DATE,
-    deleted_at: DataTypes.DATE
+    updatedAt: DataTypes.DATE
   });
 
   User.associate = (models) => {
-    // models.User.hasMany(models.Board);
     models.User.belongsToMany(models.Board, { through: 'BoardUser' });
   }
 

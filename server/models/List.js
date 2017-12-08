@@ -6,17 +6,17 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4,
       allowNull: false
     },
-    created_at: {
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false
     },
-    updated_at: DataTypes.DATE,
-    deleted_at: DataTypes.DATE
+    updatedAt: DataTypes.DATE
   });
 
-  // List.associate = (models) => {
-  //   models.List.hasMany(models.group);
-  // }
+  List.associate = (models) => {
+    models.List.belongsTo(models.Board);
+    models.List.hasMany(models.Card);
+  }
 
   return List;
 };

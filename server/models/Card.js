@@ -6,17 +6,18 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4,
       allowNull: false
     },
-    created_at: {
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false
     },
-    updated_at: DataTypes.DATE,
-    deleted_at: DataTypes.DATE
+    updatedAt: DataTypes.DATE
   });
 
-  // Card.associate = (models) => {
-  //   models.User.hasMany(models.group);
-  // }
+  Card.associate = (models) => {
+    models.Card.hasMany(models.Comment);
+    models.Card.belongsTo(models.List);
+    models.Card.belongsTo(models.User, { as: 'Author' });
+  }
 
   return Card;
 };

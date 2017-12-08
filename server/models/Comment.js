@@ -6,16 +6,16 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4,
       allowNull: false
     },
-    created_at: {
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false
     },
-    updated_at: DataTypes.DATE,
-    deleted_at: DataTypes.DATE
+    updatedAt: DataTypes.DATE
   });
 
   Comment.associate = (models) => {
-    models.Comment.hasOne(models.User, { as: 'Author' });
+    models.Comment.belongsTo(models.User, { as: 'Author' });
+    models.Comment.belongsTo(models.Card);
   }
 
   return Comment;
