@@ -13,12 +13,15 @@ import rootReducer from './redux/reducers/index';
 const defaultState = {
   // posts,
   // comments
-  user: {
-    id: null
-  }
+  posts: [
+    {
+      id: 1,
+      comment: 'lorem ipsum'
+    }
+  ]
 };
 
-const store = createStore(rootReducer, defaultState);
+const store = createStore(rootReducer, defaultState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()) ;
 
 
 export const history = syncHistoryWithStore(createBrowserHistory(), store);
