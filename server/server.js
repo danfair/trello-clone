@@ -44,8 +44,8 @@ app.use(cookieParser());
 // }));
 
 // // Passport JS is what we use to handle our logins
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 // promisify some callback based APIs
 // app.use((req, res, next) => {

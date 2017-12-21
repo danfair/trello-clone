@@ -4,6 +4,8 @@ const path = require('path');
 const { catchErrors } = require('./errorHandlers');
 const models = require('./models');
 
+const authController = require('./controllers/authController');
+
 // controllers 
 // const storeController = require('../controllers/storeController');
 // const userController = require('../controllers/userController');
@@ -38,6 +40,22 @@ router.get('/boards/:boardId', (req, res) => {
 
   
 })
+
+router.post('/register', authController.register);
+
+router.post('/login', authController.login);
+
+router.get('/test', (req, res) => {
+  res.json({
+    isAuthenticated: req.isAuthenticated()
+  })
+})
+
+// router.post('/login', (req, res) => {
+//   console.log('received', req.body);
+//   res.json(req.body);
+  
+// })
 
 // router.get('/', catchErrors(storeController.getStores));
 // router.get('/stores', catchErrors(storeController.getStores));

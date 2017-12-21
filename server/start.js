@@ -1,6 +1,6 @@
 // const mongoose = require('mongoose');
 // const Sequelize = require('sequelize');
-
+const passport = require('passport');
 // import environmental variables from our variables.env file
 require('dotenv').config({ path: 'variables.env' });
 
@@ -51,6 +51,7 @@ require('dotenv').config({ path: 'variables.env' });
 // require('./models/User');
 // require('./models/Review');
 const models = require('./models');
+require('./config/passport/passport.js')(passport, models.User);
 
 // Start our app!
 const app = require('./server');
