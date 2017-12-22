@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const path = require('path');
 const { catchErrors } = require('./errorHandlers');
 const models = require('./models');
@@ -45,9 +46,9 @@ router.post('/register', authController.register);
 
 router.post('/login', authController.login);
 
-router.get('/test', (req, res) => {
+router.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.json({
-    isAuthenticated: req.isAuthenticated()
+    isAuthenticated: true
   })
 })
 

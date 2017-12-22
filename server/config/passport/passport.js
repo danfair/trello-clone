@@ -1,4 +1,8 @@
 var bCrypt = require('bcrypt-nodejs');
+var passportJWT = require("passport-jwt");
+
+var ExtractJwt = passportJWT.ExtractJwt;
+var JwtStrategy = passportJWT.Strategy;
 
 module.exports = function (passport, user) {
   var User = user;
@@ -87,4 +91,26 @@ module.exports = function (passport, user) {
       });
     }
   ));
+
+  var jwtOptions = {}
+  jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('jwt');
+  jwtOptions.secretOrKey = 'tasmanianDevil';
+
+  passport.use(new JwtStrategy(jwtOptions, function (jwt_payload, next) {
+    console.log('payload received', jwt_payload);
+    // usually this would be a database call:
+    // var user = users[_.findIndex(users, { id: jwt_payload.id })];
+    User.findOne({
+      where: {
+        id: jwt_payload.id
+      }
+    }).then(function (user) {
+      if (user) {
+        next(null, user);
+      } else {
+        next(null, false);
+      }
+    })
+    
+  }));
 }
