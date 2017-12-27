@@ -13,12 +13,9 @@ import rootReducer from './redux/reducers/index';
 const defaultState = {
   // posts,
   // comments
-  posts: [
-    {
-      id: 1,
-      comment: 'lorem ipsum'
-    }
-  ]
+  boards: [{
+    id: 5
+  }]
 };
 
 const store = createStore(rootReducer, defaultState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()) ;

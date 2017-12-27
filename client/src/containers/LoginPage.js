@@ -5,6 +5,7 @@ class LoginPage extends Component {
     return (
       <div>
         login
+        <h5>board: {this.props.boards && this.props.boards[0].id}</h5>
       </div>
     );
   }

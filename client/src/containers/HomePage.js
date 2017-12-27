@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Test from '../components/Test';
 
 class HomePage extends Component {
@@ -9,6 +10,11 @@ class HomePage extends Component {
     name: '',
     loginUsername: '',
     loginPassword: '',
+    isAuthenticated: false
+  }
+
+  componentDidMount() {
+    console.log('this.props', this.props);
   }
 
   register = (e) => {
@@ -48,46 +54,66 @@ class HomePage extends Component {
       },
     })
       .then(response => response.json())
-      .then(res => console.log('login res', res))
+      .then(res => {
+        if (res.success) {
+          localStorage.setItem('token', res.token);
+          this.setState({
+            isAuthenticated: true,
+          })
+        }
+      })
   }
 
-  testAuth = () => {
-    fetch('http://localhost:7777/test')
-      .then(response => response.json())
-      .then(res => console.log('test res', res))
+  logout = () => {
+    localStorage.removeItem('token');
   }
+
+  // testAuth = () => {
+  //   fetch('http://localhost:7777/test', {
+  //     headers: {
+  //       'Authorization': 'JWT ' + localStorage.getItem('token'),
+  //     },
+  //   })
+  //     .then(response => response.json())
+  //     .then(res => console.log('test', res))
+  // }
 
   render() {
-    return (
-      <div>
-        <form>
-          <legend>Register</legend>
-          <label htmlFor="name">Name</label>
-          <input type="text" onKeyUp={(e) => { this.setState({ name: e.target.value }) }} />
-          <br />
-          <label htmlFor="username">username</label>
-          <input type="username" onKeyUp={(e) => { this.setState({ username: e.target.value }) }} />
-          <br />
-          <label htmlFor="password">Password</label>
-          <input type="password" onKeyUp={(e) => { this.setState({ password: e.target.value }) }} />
-          <br />
-          <input type="submit" onClick={this.register} value="Register" />
-        </form>
+    if (this.state.isAuthenticated) {
+      return <Redirect to="/boards" />
+    } else {
+      return (
+        <div>
+          <h5>board: {this.props.boards && this.props.boards[0].id}</h5>
+          <form>
+            <legend>Register</legend>
+            <label htmlFor="name">Name</label>
+            <input type="text" onKeyUp={(e) => { this.setState({ name: e.target.value }) }} />
+            <br />
+            <label htmlFor="username">username</label>
+            <input type="username" onKeyUp={(e) => { this.setState({ username: e.target.value }) }} />
+            <br />
+            <label htmlFor="password">Password</label>
+            <input type="password" onKeyUp={(e) => { this.setState({ password: e.target.value }) }} />
+            <br />
+            <input type="submit" onClick={this.register} value="Register" />
+          </form>
 
-        <form>
-          <legend>Login</legend>
-          <label htmlFor="username">username</label>
-          <input type="username" onKeyUp={(e) => { this.setState({ loginUsername: e.target.value }) }} />
-          <br />
-          <label htmlFor="password">Password</label>
-          <input type="password" onKeyUp={(e) => { this.setState({ loginPassword: e.target.value }) }} />
-          <br />
-          <input type="submit" onClick={this.login} value="Login" />
-        </form>
+          <form>
+            <legend>Login</legend>
+            <label htmlFor="username">username</label>
+            <input type="username" onKeyUp={(e) => { this.setState({ loginUsername: e.target.value }) }} />
+            <br />
+            <label htmlFor="password">Password</label>
+            <input type="password" onKeyUp={(e) => { this.setState({ loginPassword: e.target.value }) }} />
+            <br />
+            <input type="submit" onClick={this.login} value="Login" />
+          </form>
 
-        <button onClick={this.testAuth}>Test auth</button>
-      </div>
-    );
+          <button onClick={this.logout}>logout</button>
+        </div>
+      );
+    }
   }
 }
 
