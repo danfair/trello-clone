@@ -1,5 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import * as actionCreators from '../redux/actions/actionCreators';
 import MainContainer from './MainContainer';
 
@@ -15,6 +16,7 @@ function mapDispachToProps(dispatch) {
   return bindActionCreators(actionCreators, dispatch);
 }
 
-const App = connect(mapStateToProps, mapDispachToProps)(MainContainer);
+const AppContainer = connect(mapStateToProps, mapDispachToProps)(MainContainer);
 
-export default App;
+export default withRouter(AppContainer);
+// export default AppContainer;

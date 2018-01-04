@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import Test from '../components/Test';
 
 class HomePage extends Component {
 
@@ -68,16 +67,6 @@ class HomePage extends Component {
     localStorage.removeItem('token');
   }
 
-  // testAuth = () => {
-  //   fetch('http://localhost:7777/test', {
-  //     headers: {
-  //       'Authorization': 'JWT ' + localStorage.getItem('token'),
-  //     },
-  //   })
-  //     .then(response => response.json())
-  //     .then(res => console.log('test', res))
-  // }
-
   render() {
     if (this.state.isAuthenticated) {
       return <Redirect to="/boards" />
@@ -111,6 +100,7 @@ class HomePage extends Component {
           </form>
 
           <button onClick={this.logout}>logout</button>
+
         </div>
       );
     }

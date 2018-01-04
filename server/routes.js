@@ -26,14 +26,22 @@ router.get('/users', (req, res) => {
   });
 });
 
-router.get('/boards/:boardId', (req, res) => {
+router.get('/boards', passport.authenticate('jwt', { session: false }), (req, res) => {
+  req.user.getBoards()
+    .then((boards) => res.json(boards))
+})
+
+router.get('/board/:boardId', passport.authenticate('jwt', { session: false }), (req, res) => {
   // models.group.findAll({
   //   include: [ models.user ]
   // }).then((groups) => {
   //   res.json(groups);
   // });
   models.Board.findByPrimary(req.params.boardId, {
-    include: [ models.User ]
+    include: [{
+      model: models.User,
+      attributes: ['id', 'username'],
+    }]
   })
     .then((board) => {
       res.json(board);
@@ -48,8 +56,23 @@ router.post('/login', authController.login);
 
 router.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.json({
-    isAuthenticated: true
+    isAuthenticated: true,
+    user: req.user,
   })
+});
+
+router.post('/createBoard', passport.authenticate('jwt', { session: false }), (req, res) => {
+  models.Board.create({
+    name: req.body.boardTitle,
+    userId: req.user.id,
+  })
+    .then((board) => {
+      req.user.addBoard(board, { through: 'BoardUser' })
+        .then((boardArray) => {
+          res.json(boardArray[0][0]);
+        })
+    })
+
 })
 
 // router.post('/login', (req, res) => {

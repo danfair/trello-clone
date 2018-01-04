@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Link, Route, Switch } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 
 import HomePage from './HomePage';
 import LoginPage from './LoginPage';
@@ -14,14 +14,12 @@ class MainContainer extends Component {
         <header className="app-header">
           <Link to="/">
             <h1>Trello Clone</h1>
-            <h5>{this.props.boards[0].id}</h5>
           </Link>
         </header>
-        {/* {React.cloneElement({ ...this.props }.children, { ...this.props })} */}
         <Route exact path={this.props.match.url} render={(props) => <HomePage {...this.props} />} />
         <Route path={`${this.props.match.url}login`} render={(props) => <LoginPage {...this.props} />} />
-        <Route path={`${this.props.match.url}boards`} component={BoardsPage} />
-        <Route path={`${this.props.match.url}boards/:boardId`} component={BoardPage} />
+        <Route exact path={`${this.props.match.url}boards`} component={BoardsPage} />
+        <Route path={`${this.props.match.url}board/:boardId`} component={BoardPage} />
         <Route path={`${this.props.match.url}settings`} component={SettingsPage} />
       </div>
     )
