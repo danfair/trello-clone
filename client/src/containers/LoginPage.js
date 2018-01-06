@@ -1,17 +1,6 @@
 import React, { Component } from 'react';
 
 class LoginPage extends Component {
-
-  testAuth = () => {
-    fetch('http://localhost:7777/test', {
-      headers: {
-        'Authorization': 'JWT ' + localStorage.getItem('token'),
-      },
-    })
-      .then(response => response.json())
-      .then(res => console.log('test', res))
-  }
-
   render() {
     return (
       <div>

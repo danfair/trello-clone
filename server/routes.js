@@ -50,17 +50,6 @@ router.get('/board/:boardId', passport.authenticate('jwt', { session: false }), 
   
 })
 
-router.post('/register', authController.register);
-
-router.post('/login', authController.login);
-
-router.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
-  res.json({
-    isAuthenticated: true,
-    user: req.user,
-  })
-});
-
 router.post('/createBoard', passport.authenticate('jwt', { session: false }), (req, res) => {
   models.Board.create({
     name: req.body.boardTitle,
@@ -72,8 +61,62 @@ router.post('/createBoard', passport.authenticate('jwt', { session: false }), (r
           res.json(boardArray[0][0]);
         })
     })
-
 })
+
+router.get('/board/:boardId/lists', passport.authenticate('jwt', { session: false }), (req, res) => {
+  models.Board.findByPrimary(req.params.boardId, {
+    include: [{
+      model: models.User,
+      attributes: ['id', 'username'],
+    }]
+  })
+    .then(board => {
+      console.log('board.Users', board.Users);
+      console.log('req.user.id', req.user.id);
+      if (board.Users.some(user => user['id'] == req.user.id)) {
+        board.getLists()
+          .then((lists) => res.json(lists))
+      } else {
+        res.json({
+          error: true,
+          message: 'Not authorized to view this'
+        })
+      }
+      
+    })
+});
+
+router.post('/createList', passport.authenticate('jwt', { session: false }), (req, res) => {
+  models.Board.findByPrimary(req.body.boardId, {
+    include: [{
+      model: models.User,
+      attributes: ['id', 'username'],
+    }]
+  })
+    .then((board) => {
+      models.List.create({
+        title: req.body.listTitle,
+        BoardId: req.body.boardId,
+      })
+        .then((list) => {
+          board.addList(list)
+            .then
+        })
+    })
+
+  
+})
+
+router.post('/register', authController.register);
+
+router.post('/login', authController.login);
+
+// router.get('/test', passport.authenticate('jwt', { session: false }), (req, res) => {
+//   res.json({
+//     isAuthenticated: true,
+//     user: req.user,
+//   })
+// });
 
 // router.post('/login', (req, res) => {
 //   console.log('received', req.body);

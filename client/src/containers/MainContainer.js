@@ -18,7 +18,7 @@ class MainContainer extends Component {
         </header>
         <Route exact path={this.props.match.url} render={(props) => <HomePage {...this.props} />} />
         <Route path={`${this.props.match.url}login`} render={(props) => <LoginPage {...this.props} />} />
-        <Route exact path={`${this.props.match.url}boards`} component={BoardsPage} />
+        <Route path={`${this.props.match.url}boards`} render={(props) => <BoardsPage {...this.props} />} />
         <Route path={`${this.props.match.url}board/:boardId`} component={BoardPage} />
         <Route path={`${this.props.match.url}settings`} component={SettingsPage} />
       </div>

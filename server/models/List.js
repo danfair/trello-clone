@@ -10,6 +10,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: false
     },
+    title: {
+      type: DataTypes.STRING,
+      required: true
+    },
     updatedAt: DataTypes.DATE
   });
 
